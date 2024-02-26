@@ -11,17 +11,29 @@ type Sleeper interface {
 	Sleep()
 }
 
-func Countdown(writer io.Writer) {
+type DefaultSleeper struct{}
+
+func (s DefaultSleeper) Sleep() {
+	time.Sleep(1 * time.Second)
+}
+
+func Countdown(writer io.Writer, sleeper Sleeper) {
 	for i := 3; i > 0; i-- {
 		fmt.Fprintln(writer, i)
+
 		// add 1-second pause
-		// we have a dependency on Sleeping which we need to extract
-		// so we can then control it in our test
-		time.Sleep(1 * time.Second)
+		// we have a dependency on Sleeping
+		// which we need to extract, so we can then control it in our test
+
+		// if we can mock time.Sleep, we can use dependency injection to use it
+		// instead of a real time.Sleep
+		// time.Sleep(1 * time.Second)
+
+		sleeper.Sleep()
 	}
 	fmt.Fprint(writer, "Go!")
 }
 
 func main() {
-	Countdown(os.Stdout)
+	Countdown(os.Stdout, DefaultSleeper{})
 }

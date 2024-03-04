@@ -12,6 +12,7 @@ func CheckWebsites(wc WebsiteChecker, urls []string) map[string]bool {
 			// The common problem when we use closure is not capture the input
 			// param
 			results[url] = wc(url)
+			// It may make fatal error "concurrent map write" -> race condition
 		}(url)
 	}
 

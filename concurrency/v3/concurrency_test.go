@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+// Can use go test -race to check race condition
+// Make it work, make it right, make it fast
 func mockWebsiteChecker(url string) bool {
 	return !(url == `waat://furhurterwe.geds`)
 }
